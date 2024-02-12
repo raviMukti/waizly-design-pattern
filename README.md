@@ -18,7 +18,7 @@
 Many commands are in `Makefile` file. Example `start`, `stop`, `build` and [many more 👇](#-list-of-commands).
 
 - It is not recommended to clone or fork the repository, download a copy of this Git repository
-- Run this command `make laravel-install` for install Laravel with Composer
+- Run this command `make laravel-install v=9` for install Laravel with Composer
 - **⚠️ Modify** environnement file `.env` create by Laravel installer with this :
 
 ```bash
