@@ -1,0 +1,72 @@
+services:
+  http:
+    image: nginx:1.20
+    ports:
+      - '8881:80'
+    volumes:
+      - './:/app/'
+      - './docker/nginx/nginx.conf:/etc/nginx/nginx.conf'
+    depends_on:
+      - php
+    networks:
+      - payroll_network
+  php:
+    build:
+      context: ./docker/php/
+      args:
+        WWWUSER: 'laravel'
+        WWWUID: '1000'
+    volumes:
+      - '.:/app/'
+    # extra_hosts:
+    #   - 'host.docker.internal:host-gateway'
+    networks:
+      - payroll_network
+    depends_on:
+      - pgsql
+#   node:
+#     image: node:16
+#     volumes:
+#         - './:/app/'
+#     working_dir: '/app/'
+  pgsql:
+    image: postgres:14
+    ports:
+      - '${FORWARD_DB_PORT:-5432}:5432'
+    environment:
+      PGPASSWORD: '${DB_PASSWORD:-secret}'
+      POSTGRES_DB: '${DB_DATABASE:-laravel}'
+      POSTGRES_USER: '${DB_USERNAME:-laravel}'
+      POSTGRES_PASSWORD: '${DB_PASSWORD:-secret}'
+    volumes:
+      - 'pgsql:/var/lib/postgresql/data'
+    networks:
+      - payroll_network
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-q", "-d", "${DB_DATABASE:-laravel}", "-U", "${DB_USERNAME:-laravel}" ]
+  mailhog:
+    image: 'mailhog/mailhog:latest'
+    ports:
+      - '${FORWARD_MAILHOG_PORT:-1025}:1025'
+      - '${FORWARD_MAILHOG_DASHBOARD_PORT:-8025}:8025'
+    networks:
+      - payroll_network
+
+  localstack:
+    image: localstack/localstack
+    environment:
+      - SERVICES=s3
+      - DEFAULT_REGION=${AWS_DEFAULT_REGION}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+    ports:
+      - "4566:4566"  # Port untuk LocalStack S3
+    networks:
+      - payroll_network
+
+networks:
+  payroll_network:
+    driver: bridge
+volumes:
+  pgsql:
+    driver: local

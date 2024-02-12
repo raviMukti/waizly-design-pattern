@@ -1,0 +1,9 @@
+{
+    "php.problems.scope": "opened",
+    "php-implementor.autoloads": {
+        "App": "app/"
+    },
+    "php.version": "8.3",
+    "terminal.integrated.gpuAcceleration": "off",
+    "phpunit.phpunit": "./vendor/bin/phpunit"
+}
