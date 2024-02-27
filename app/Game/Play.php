@@ -8,10 +8,10 @@ class Play
 
     protected $arena;
 
-    public function __construct(Level $level, Arena $arena)
+    public function __construct(PlayFactory $playFactory)
     {
-        $this->level = $level;
-        $this->arena = $arena;
+        $this->level = $playFactory->createLevel();
+        $this->arena = $playFactory->createArena();
     }
 
     public function start()

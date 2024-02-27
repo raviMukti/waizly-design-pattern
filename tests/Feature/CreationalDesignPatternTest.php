@@ -12,6 +12,9 @@ use App\Game\Impl\ArenaMedium;
 use App\Game\Impl\LevelEasy;
 use App\Game\Impl\LevelHard;
 use App\Game\Impl\LevelMedium;
+use App\Game\Impl\PlayEasy;
+use App\Game\Impl\PlayHard;
+use App\Game\Impl\PlayMedium;
 use App\Game\Play;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -75,18 +78,35 @@ class CreationalDesignPatternTest extends TestCase
     /**
      * test play game with no abs factory
      */
-    public function test_play_game_with_no_abs_factory()
+    // public function test_play_game_with_no_abs_factory()
+    // {
+    //    $playEasy = new Play(new LevelEasy(), new ArenaEasy()); // Kebayang kalo mau nambahin constructor yang namanya Enemy, masing - masing bakalan ditambahin constructor Enemy sesuai level nya
+    //    $playEasy->start();
+
+    //    $playMedium = new Play(new LevelMedium(), new ArenaMedium());
+    //    $playMedium->start();
+
+    //    $playHard = new Play(new LevelHard(), new ArenaHard());
+    //    $playHard->start();
+
+    //    $this->assertTrue(true);
+    // }
+
+
+    /**
+     * test play game with abs factory
+     */
+    public function test_play_game_with_abs_factory()
     {
-       $playEasy = new Play(new LevelEasy(), new ArenaEasy()); // Kebayang kalo mau nambahin constructor yang namanya Enemy, masing - masing bakalan ditambahin constructor Enemy sesuai level nya
-       $playEasy->start();
+        $playEasy = new Play(new PlayEasy());
+        $playEasy->start();
 
-       $playMedium = new Play(new LevelMedium(), new ArenaMedium());
-       $playMedium->start();
+        $playMedium = new Play(new PlayMedium());
+        $playMedium->start();
 
-       $playHard = new Play(new LevelHard(), new ArenaHard());
-       $playHard->start();
+        $playHard = new Play(new PlayHard());
+        $playHard->start();
 
-       $this->assertTrue(true);
+        $this->assertTrue(true);
     }
-
 }
