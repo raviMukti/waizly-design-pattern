@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Dto\Builder\EmployeeRequestBuilder;
 use App\Dto\Employee;
 use App\Dto\EmployeeRequest;
+use App\Dto\Factory\EmployeeFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -50,5 +51,17 @@ class CreateEmployeeTest extends TestCase
         $this->assertStringContainsString("HOD", $employeeHod->getRole());
     }
 
-    
+    /**
+     * test create employee with factory
+     */
+    public function test_create_employee_with_factory()
+    {
+        $employeeEngineer = EmployeeFactory::makeEngineer("Abed");
+        $employeeManager = EmployeeFactory::makeManager("Nego");
+        $employeeHod = EmployeeFactory::makeHod("Negi");
+
+        $this->assertEquals("Engineer", $employeeEngineer->getRole());
+        $this->assertEquals("Manager", $employeeManager->getRole());
+        $this->assertEquals("HOD", $employeeHod->getRole());
+    }
 }
