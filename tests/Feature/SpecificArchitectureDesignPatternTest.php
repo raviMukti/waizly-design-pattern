@@ -76,4 +76,49 @@ class SpecificArchitectureDesignPatternTest extends TestCase
         $response->assertSuccessful();
     }
 
+    /**
+     * test update product should be ok
+     */
+    public function test_update_product_should_be_ok()
+    {
+        /** @var Product $product */
+        $product = Product::factory()
+                ->state([
+                    "name" => "etawalin",
+                    "description" => "susu kambing sehat",
+                    "sku" => "ABC",
+                    "price" => 10000,
+                    "stock" => 100
+                ])
+                ->createOne();
+
+        $response = $this->patchJson("/api/products/{$product->id}", [
+            "name" => "etawaku",
+            "description" => "susu kambings",
+        ]);
+
+        $response->assertSuccessful();
+    }
+
+    public function test_update_product_should_not_found()
+    {
+        /** @var Product $product */
+        $product = Product::factory()
+                ->state([
+                    "name" => "etawalin",
+                    "description" => "susu kambing sehat",
+                    "sku" => "ABC",
+                    "price" => 10000,
+                    "stock" => 100
+                ])
+                ->createOne();
+
+        $response = $this->patchJson("/api/products/0", [
+            "name" => "etawaku",
+            "description" => "susu kambings",
+        ]);
+
+        $response->assertNotFound();
+    }
+
 }

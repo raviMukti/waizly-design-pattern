@@ -2,6 +2,7 @@
 
 namespace App\Services;
 use App\Dto\CreateProductRequest;
+use App\Dto\UpdateProductRequest;
 use App\Models\Product;
 use App\Repository\Facades\ProductRepository;
 use Illuminate\Http\Request;
@@ -35,5 +36,25 @@ class ProductService
         $product->save();
 
         return $product;
+    }
+
+    public function update(UpdateProductRequest $request, int $id)
+    {
+        // Find Id
+        $product = ProductRepository::find($id);
+        // IF true
+        if(!empty($product))
+        {
+            $product->name = $request->getName();
+            $product->save();
+
+            return response()->json($product);
+        }
+        else
+        {
+            return response()->json([
+                "message" => "Product not found"
+            ], 404);
+        }
     }
 }

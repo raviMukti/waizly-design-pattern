@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Dto\Builder\CreateProductRequestBuilder;
+use App\Dto\Builder\UpdateProductRequestBuilder;
 use App\Models\Product;
 // use App\Repository\ProductRepository;
 use App\Repository\Facades\ProductRepository;
@@ -123,7 +124,19 @@ class ProductController extends Controller
                                         ->build();
 
         $product = $this->productService->create($createProductRequest);
-        
+
         return response()->json($product);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $rawData = $request->all();
+
+        $updateProductRequest = (new UpdateProductRequestBuilder())
+                                        ->setName($rawData['name'])
+                                        ->setDescription($rawData['description'])
+                                        ->build();
+
+        return $this->productService->update($updateProductRequest, $id);
     }
 }
