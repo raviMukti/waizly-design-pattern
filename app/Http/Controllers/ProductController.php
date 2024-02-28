@@ -3,17 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
-use App\Repository\ProductRepository;
+// use App\Repository\ProductRepository;
+use App\Repository\Facades\ProductRepository;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-    protected $productRepository;
+    // protected $productRepository;
 
-    public function __construct(ProductRepository $productRepository)
-    {
-        $this->productRepository = $productRepository;
-    }
+    // public function __construct(ProductRepository $productRepository)
+    // {
+    //     $this->productRepository = $productRepository;
+    // }
 
     /**
      * Sebelum pake repository pattern
@@ -36,6 +37,24 @@ class ProductController extends Controller
     //     return response()->json($products);
     // }
 
+    // public function search(Request $request)
+    // {
+    //     $name = $request->query("name");
+    //     $sku = $request->query("sku");
+
+    //     if(!is_null($sku))
+    //     {
+    //         $products = $this->productRepository->findBySku($sku);
+    //         return response()->json($products);
+    //     }
+
+    //     $products = $this->productRepository->findByName($name);
+    //     return response()->json($products);
+    // }
+
+    /**
+     * After facades
+     */
     public function search(Request $request)
     {
         $name = $request->query("name");
@@ -43,11 +62,11 @@ class ProductController extends Controller
 
         if(!is_null($sku))
         {
-            $products = $this->productRepository->findBySku($sku);
+            $products = ProductRepository::findBySku($sku);
             return response()->json($products);
         }
 
-        $products = $this->productRepository->findByName($name);
+        $products = ProductRepository::findByName($name);
         return response()->json($products);
     }
 }
