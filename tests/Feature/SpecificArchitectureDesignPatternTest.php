@@ -59,4 +59,21 @@ class SpecificArchitectureDesignPatternTest extends TestCase
         $response->assertSuccessful();
     }
 
+    /**
+     * test create product should be ok
+     * @runInSeparateProcess
+     */
+    public function test_create_product_should_be_ok()
+    {
+        $response = $this->postJson("/api/products", [
+            "name" => "etawalin",
+            "description" => "susu kambing sehat",
+            "sku" => "ABC",
+            "price" => 10000,
+            "stock" => 100
+        ]);
+
+        $response->assertSuccessful();
+    }
+
 }

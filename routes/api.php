@@ -16,3 +16,5 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get("/products/search", [ProductController::class, "search"]);
+
+Route::post("/products", [ProductController::class, "create"]);

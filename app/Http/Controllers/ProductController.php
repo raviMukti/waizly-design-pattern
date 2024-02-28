@@ -79,4 +79,19 @@ class ProductController extends Controller
 
         return response()->json($products);
     }
+
+    public function create(Request $request)
+    {
+        $request->validate([
+            'name' => 'required',
+            'sku' => 'required',
+            'description' => 'required',
+            'price' => 'required',
+            'stock' => 'required',
+        ]);
+
+        $product = ProductRepository::create($request->all());
+        
+        return response()->json($product);
+    }
 }
