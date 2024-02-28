@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Dto\Builder\CreateProductRequestBuilder;
 use App\Models\Product;
 // use App\Repository\ProductRepository;
 use App\Repository\Facades\ProductRepository;
@@ -103,9 +104,26 @@ class ProductController extends Controller
     //     return response()->json($product);
     // }
 
+    // public function create(Request $request)
+    // {
+    //     $product = $this->productService->create($request);
+    //     return response()->json($product);
+    // }
+
     public function create(Request $request)
     {
-        $product = $this->productService->create($request);
+        $rawData = $request->all();
+
+        $createProductRequest = (new CreateProductRequestBuilder())
+                                        ->setName($rawData['name'])
+                                        ->setSku($rawData['sku'])
+                                        ->setDescription($rawData['description'])
+                                        ->setPrice($rawData['price'])
+                                        ->setStock($rawData['stock'])
+                                        ->build();
+
+        $product = $this->productService->create($createProductRequest);
+        
         return response()->json($product);
     }
 }
