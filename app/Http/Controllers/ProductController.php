@@ -62,11 +62,21 @@ class ProductController extends Controller
 
         if(!is_null($sku))
         {
-            $products = ProductRepository::findBySku($sku);
+            $products = ProductRepository::where(
+                [
+                    ["sku", "=", $sku]
+                ]
+            )->first();
+
             return response()->json($products);
         }
 
-        $products = ProductRepository::findByName($name);
+        $products = ProductRepository::where(
+                [
+                    ["name", "=", $name]
+                ]
+        )->first();
+
         return response()->json($products);
     }
 }
