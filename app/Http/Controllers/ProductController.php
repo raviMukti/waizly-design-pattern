@@ -128,15 +128,28 @@ class ProductController extends Controller
         return response()->json($product);
     }
 
+    // public function update(Request $request, $id)
+    // {
+    //     $rawData = $request->all();
+
+    //     $updateProductRequest = (new UpdateProductRequestBuilder())
+    //                                     ->setName($rawData['name'])
+    //                                     ->setDescription($rawData['description'])
+    //                                     ->build();
+
+    //     return $this->productService->update($updateProductRequest, $id);
+    // }
+
     public function update(Request $request, $id)
     {
         $rawData = $request->all();
 
         $updateProductRequest = (new UpdateProductRequestBuilder())
+                                        ->setId($id)
                                         ->setName($rawData['name'])
                                         ->setDescription($rawData['description'])
                                         ->build();
 
-        return $this->productService->update($updateProductRequest, $id);
+        return $this->productService->update($updateProductRequest);
     }
 }

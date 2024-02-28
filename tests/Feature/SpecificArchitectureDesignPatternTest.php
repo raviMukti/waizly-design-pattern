@@ -118,7 +118,7 @@ class SpecificArchitectureDesignPatternTest extends TestCase
             "description" => "susu kambings",
         ]);
 
-        $response->assertNotFound();
+        $response->assertBadRequest();
     }
 
 }

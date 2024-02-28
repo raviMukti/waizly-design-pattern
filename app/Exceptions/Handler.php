@@ -3,6 +3,10 @@
 namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpFoundation\Exception\BadRequestException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -25,6 +29,34 @@ class Handler extends ExceptionHandler
     {
         $this->reportable(function (Throwable $e) {
             //
+        });
+
+        $this->renderable(function (Throwable $e)
+        {
+            if($e instanceof NotFoundHttpException)
+            {
+                return response()->json([
+                    'message' => 'Resource not found'
+                ], 404);
+            }
+            elseif($e instanceof BadRequestException)
+            {
+                return response()->json([
+                    'message' => 'Bad Request',
+                ], 400);
+            }
+            elseif($e instanceof ResourceNotFoundException)
+            {
+                return response()->json([
+                    'message' => 'Resource Not Found',
+                ], 404);
+            }
+            else
+            {
+                return response()->json([
+                    'message' => 'Internal Server Error',
+                ], 500);
+            }
         });
     }
 }

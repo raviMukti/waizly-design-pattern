@@ -38,23 +38,34 @@ class ProductService
         return $product;
     }
 
-    public function update(UpdateProductRequest $request, int $id)
+    // public function update(UpdateProductRequest $request, int $id)
+    // {
+    //     // Find Id
+    //     $product = ProductRepository::find($id);
+    //     // IF true
+    //     if(!empty($product))
+    //     {
+    //         $product->name = $request->getName();
+    //         $product->save();
+
+    //         return response()->json($product);
+    //     }
+    //     else
+    //     {
+    //         return response()->json([
+    //             "message" => "Product not found"
+    //         ], 404);
+    //     }
+    // }
+
+
+    public function update(UpdateProductRequest $request)
     {
         // Find Id
-        $product = ProductRepository::find($id);
-        // IF true
-        if(!empty($product))
-        {
-            $product->name = $request->getName();
-            $product->save();
+        $product = ProductRepository::update(
+            ["name" => $request->getName()], $request->getId()
+        );
 
-            return response()->json($product);
-        }
-        else
-        {
-            return response()->json([
-                "message" => "Product not found"
-            ], 404);
-        }
+        return response()->json($product);
     }
 }

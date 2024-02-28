@@ -4,6 +4,8 @@ namespace App\Dto;
 
 class UpdateProductRequest extends DtoAbstract implements DtoInterface
 {
+    private $id;
+
     private $name;
 
     private $description;
@@ -19,6 +21,7 @@ class UpdateProductRequest extends DtoAbstract implements DtoInterface
     public function configureValidatorRules(): array
     {
         return [
+            "id" => "required|exists:products,id",
             "name" => "required",
         ];
     }
@@ -26,6 +29,7 @@ class UpdateProductRequest extends DtoAbstract implements DtoInterface
     public function configureValidatorMessages(): array
     {
         return [
+            "exists" => "Product not found",
             "required" => ":attribute is required"
         ];
     }
@@ -33,6 +37,7 @@ class UpdateProductRequest extends DtoAbstract implements DtoInterface
     public function map(array $data): bool
     {
         $serializable = true;
+        isset($data["id"]) ? $this->id = $data["id"] : $serializable = false;
         isset($data["name"]) ? $this->name = $data["name"] : $serializable = false;
         return $serializable;
     }
@@ -69,6 +74,24 @@ class UpdateProductRequest extends DtoAbstract implements DtoInterface
     public function setDescription($description): self
     {
         $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of id
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set the value of id
+     */
+    public function setId($id): self
+    {
+        $this->id = $id;
 
         return $this;
     }
