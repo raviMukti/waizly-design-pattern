@@ -5,10 +5,18 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 // use App\Repository\ProductRepository;
 use App\Repository\Facades\ProductRepository;
+use App\Services\ProductService;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
+    private $productService;
+
+    public function __construct(ProductService $productService)
+    {
+        $this->productService = $productService;
+    }
+
     // protected $productRepository;
 
     // public function __construct(ProductRepository $productRepository)
@@ -80,18 +88,24 @@ class ProductController extends Controller
         return response()->json($products);
     }
 
+    // public function create(Request $request)
+    // {
+    //     $request->validate([
+    //         'name' => 'required',
+    //         'sku' => 'required',
+    //         'description' => 'required',
+    //         'price' => 'required',
+    //         'stock' => 'required',
+    //     ]);
+
+    //     $product = ProductRepository::create($request->all());
+
+    //     return response()->json($product);
+    // }
+
     public function create(Request $request)
     {
-        $request->validate([
-            'name' => 'required',
-            'sku' => 'required',
-            'description' => 'required',
-            'price' => 'required',
-            'stock' => 'required',
-        ]);
-
-        $product = ProductRepository::create($request->all());
-        
+        $product = $this->productService->create($request);
         return response()->json($product);
     }
 }
