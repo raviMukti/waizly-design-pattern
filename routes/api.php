@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -20,3 +21,5 @@ Route::get("/products/search", [ProductController::class, "search"]);
 Route::post("/products", [ProductController::class, "create"]);
 
 Route::patch("/products/{id}", [ProductController::class, "update"]);
+
+Route::post("/orders", [OrderController::class, "create"]);
